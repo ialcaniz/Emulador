@@ -38,8 +38,8 @@ npx expo run:android      # build de desarrollo en un dispositivo/emulador (requ
 ### Obtener el APK sin instalar nada
 
 Cada push ejecuta el workflow **Android APK** (`.github/workflows/android-apk.yml`), que genera
-el proyecto nativo y compila un APK instalable. Descárgalo desde la pestaña *Actions* del
-repositorio → última ejecución → artefacto `revela-apk`.
+el proyecto nativo, compila un APK instalable y lo publica en la Release `apk-latest`.
+Descarga directa: https://github.com/ialcaniz/Emulador/releases/download/apk-latest/Revela.apk
 
 También puedes usar EAS: `npx eas-cli@latest build -p android --profile preview`.
 

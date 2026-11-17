@@ -5,6 +5,9 @@ on:
     branches: ['**']
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,7 +39,24 @@ jobs:
         working-directory: android
         run: ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=arm64-v8a,armeabi-v7a
 
+      - name: Renombrar APK
+        run: cp android/app/build/outputs/apk/release/app-release.apk Revela.apk
+
       - uses: actions/upload-artifact@v4
         with:
           name: revela-apk
-          path: android/app/build/outputs/apk/release/*.apk
+          path: Revela.apk
+
+      # Publica el APK en una Release fija para tener un enlace de descarga directo:
+      # https://github.com/<usuario>/<repo>/releases/download/apk-latest/Revela.apk
+      - name: Publicar en Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apk-latest
+          name: Revela (última compilación)
+          body: |
+            APK de Revela compilado automáticamente desde `${{ github.ref_name }}` (${{ github.sha }}).
+            Descarga **Revela.apk**, ábrelo en el móvil y permite «Instalar apps desconocidas».
+          prerelease: false
+          make_latest: true
+          files: Revela.apk
