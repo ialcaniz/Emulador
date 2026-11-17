@@ -1,64 +1,40 @@
-# Revela — editor de fotos para Android
+# Anota — marca tus capturas de pantalla en Android
 
-Aplicación Android (React Native + Expo + Skia) inspirada en el flujo de trabajo de los
-reveladores fotográficos de escritorio: biblioteca de fotos + módulo de revelado con
-ajustes no destructivos procesados en GPU.
+App Android (React Native + Expo + Skia) para anotar capturas de pantalla al estilo de las
+herramientas de captura de Windows: eliges una zona y la marcas con una línea roja, un
+recuadro, una flecha o texto.
 
 ## Funciones
 
-**Biblioteca**
-- Importar fotos de la galería (selección múltiple); se copian al almacenamiento de la app.
-- Cuadrícula de 2/3/4 columnas con miniaturas que muestran las ediciones.
-- Filtros: Todas · Editadas · Favoritas · Valoradas.
-- Pulsación larga: valoración con estrellas, marcar favorita, pegar ajustes, eliminar.
+- **Abrir**: «Última captura» (busca la captura más reciente de la galería) o «Elegir imagen».
+- **Zona**: arrastra para quedarte solo con una parte de la captura.
+- **Herramientas**: Lápiz, Línea, Flecha, Recuadro, Marcador (resaltador semitransparente) y Texto.
+- **Color**: 10 colores (rojo por defecto) y 3 grosores (fino, medio, grueso).
+- **Deshacer / rehacer**.
+- **Guardar** en la galería (álbum «Capturas anotadas»), **Compartir** y **Copiar** al portapapeles.
 
-**Revelado** (todos los ajustes en un shader SkSL en tiempo real)
-- **Luz**: Exposición, Contraste, Iluminaciones, Sombras, Blancos, Negros.
-- **Color**: Temperatura, Matiz, Intensidad, Saturación.
-  - *Mezcla* HSL de 8 canales (tono / saturación / luminancia).
-  - *Gradación de color*: tono y saturación de sombras e iluminaciones, equilibrio.
-- **Efectos**: Textura, Claridad, Neblina, Viñeta, Granulado.
-- **Detalle**: Enfoque.
-- **Recortar**: relaciones de aspecto, girar 90°, voltear, enderezar (con autoajuste del encuadre).
-- **Predefinidos**: 17 ajustes en 6 grupos, con vista previa en miniatura.
-- **Auto**: ajuste automático a partir del histograma.
-- Histograma RGB en vivo, mantener pulsada la foto para ver el original.
-- Deshacer / rehacer, copiar / pegar ajustes, restablecer.
-- Exportar a la galería (JPG completo, JPG 2048 px o PNG) en el álbum «Revela».
+## Descargar el APK
 
-## Ejecutar
+https://github.com/ialcaniz/Emulador/releases/download/apk-latest/Anota.apk
+
+Cada push ejecuta el workflow **Android APK** (`.github/workflows/android-apk.yml`), que compila
+el APK y lo publica en la Release `apk-latest`.
+
+## Desarrollo
 
 ```bash
 npm install
-npx expo run:android      # build de desarrollo en un dispositivo/emulador (requiere Android SDK)
-```
-
-> Skia es un módulo nativo: la app **no funciona en Expo Go**; necesita una build propia.
-
-### Obtener el APK sin instalar nada
-
-Cada push ejecuta el workflow **Android APK** (`.github/workflows/android-apk.yml`), que genera
-el proyecto nativo, compila un APK instalable y lo publica en la Release `apk-latest`.
-Descarga directa: https://github.com/ialcaniz/Emulador/releases/download/apk-latest/Revela.apk
-
-También puedes usar EAS: `npx eas-cli@latest build -p android --profile preview`.
-
-### Vista previa web (solo interfaz)
-
-```bash
-npm run web
+npx expo run:android   # build de desarrollo (Skia es nativo: no funciona en Expo Go)
+npm run web            # vista previa de la interfaz en el navegador
 ```
 
 ## Estructura
 
 ```
-App.tsx                      navegación biblioteca ⇄ editor y persistencia
-src/types.ts                 modelo de datos (Photo, Adjustments)
-src/engine/shader.ts         motor de revelado en SkSL + uniforms
-src/engine/adjustments.ts    valores por defecto, deslizadores, predefinidos, auto
-src/engine/geometry.ts       recorte, giro y enderezado
-src/engine/render.tsx        carga, exportación fuera de pantalla e histograma
-src/engine/storage.ts        biblioteca en disco (expo-file-system)
-src/screens/                 LibraryScreen, EditorScreen
-src/components/              deslizadores, histograma, paneles
+src/app/_layout.tsx          navegación (Expo Router)
+src/app/index.tsx            inicio: última captura / elegir imagen
+src/app/editor.tsx           editor de anotaciones
+src/annotate/AnnotatedImage  dibujo de la captura y las formas con Skia
+src/annotate/io.tsx          cargar, buscar la última captura, guardar, compartir, copiar
+src/annotate/types.ts        tipos de formas, colores y grosores
 ```

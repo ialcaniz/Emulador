@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Revela",
-    "slug": "revela",
+    "name": "Anota",
+    "slug": "anota",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,10 +9,10 @@
     "backgroundColor": "#141414",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ialcaniz.revela"
+      "bundleIdentifier": "com.ialcaniz.anota"
     },
     "android": {
-      "package": "com.ialcaniz.revela",
+      "package": "com.ialcaniz.anota",
       "adaptiveIcon": {
         "backgroundColor": "#141414",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -26,20 +26,23 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Revela necesita acceder a tus fotos para importarlas y editarlas."
+          "photosPermission": "Anota necesita acceder a tus fotos para abrir capturas de pantalla."
         }
       ],
       [
         "expo-media-library",
         {
-          "photosPermission": "Revela necesita acceder a tus fotos para guardar las imágenes editadas.",
-          "savePhotosPermission": "Revela necesita permiso para guardar las imágenes editadas.",
+          "photosPermission": "Anota necesita acceder a tus fotos para encontrar tu última captura.",
+          "savePhotosPermission": "Anota necesita permiso para guardar las capturas anotadas.",
           "isAccessMediaLocationEnabled": false
         }
-      ]
+      ],
+      "expo-router",
+      "expo-sharing"
     ],
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "scheme": "anota"
   }
 }
